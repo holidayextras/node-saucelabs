@@ -9,6 +9,7 @@ import {
   getStrictSsl,
   getAssetHost,
   createProxyAgent,
+  getCPUArch,
   getPlatform,
 } from '../src/utils';
 
@@ -20,6 +21,10 @@ test('createHMAC', async () => {
 
 test('getPlatform', () => {
   expect(getPlatform()).toBe(process.platform);
+});
+
+test('getCPUArch', () => {
+  expect(getCPUArch()).toBe(process.arch);
 });
 
 test('getAPIHost', () => {

@@ -12,8 +12,8 @@ async function foobar() {
   console.log(job.selenium_version);
 
   const sc = await api.startSauceConnect({
-    scVersion: '4.5.4',
-    tunnelIdentifier: '1234',
+    scVersion: '5.1.3',
+    tunnelName: '1234',
     logger: (output: string) => console.log(output),
   });
   sc.cp.pid;

@@ -3,25 +3,7 @@ import os from 'os';
 
 import {version} from '../package.json';
 
-export const DEFAULT_SAUCE_CONNECT_VERSION = '4.9.1';
-export const SAUCE_CONNECT_BASE = 'https://saucelabs.com/downloads';
-export const SAUCE_CONNECT_VERSIONS_ENDPOINT =
-  'https://saucelabs.com/versions.json';
-export const SAUCE_CONNECT_PLATFORM_DATA = {
-  darwin: {
-    url: `${SAUCE_CONNECT_BASE}/sc-%s-osx.zip`,
-    use: 'bin/sc',
-  },
-  linux: {
-    url: `${SAUCE_CONNECT_BASE}/sc-%s-linux.tar.gz`,
-    use: 'bin/sc',
-  },
-  win32: {
-    url: `${SAUCE_CONNECT_BASE}/sc-%s-win32.zip`,
-    use: 'bin/sc',
-  },
-};
-
+export const DEFAULT_SAUCE_CONNECT_VERSION = '5.2.0';
 export const SAUCE_VERSION_NOTE = `node-saucelabs v${version}\nSauce Connect v${DEFAULT_SAUCE_CONNECT_VERSION}`;
 
 const protocols = [
@@ -157,201 +139,9 @@ export const SAUCE_CONNECT_CLI_PARAMS = [
     default: DEFAULT_SAUCE_CONNECT_VERSION,
   },
   {
-    /**
-     * Sauce Connect parameter
-     */
-    alias: 'a',
-    name: 'auth',
-    description:
-      'Perform basic authentication when an URL on <host:port> asks for a username and password.',
-  },
-  {
-    name: 'cainfo',
-    description:
-      'CA certificate bundle to use for verifying REST connections. (default "/usr/local/etc/openssl/cert.pem")',
-  },
-  {
-    name: 'capath',
-    description:
-      'Directory of CA certs to use for verifying REST connections. (default "/etc/ssl/certs")',
-    deprecated: true,
-  },
-  {
     alias: 'c',
     name: 'config-file',
     description: 'Path to YAML config file.',
-  },
-  {
-    alias: 'D',
-    name: 'direct-domains',
-    description:
-      'Comma-separated list of domains. Requests whose host matches one of these will be relayed directly through the internet, instead of through the tunnel.',
-  },
-  {
-    name: 'dns',
-    description:
-      'Use specified name server(s). Example: --dns 8.8.8.8,8.8.4.4:53',
-  },
-  {
-    name: 'doctor',
-    description:
-      'Perform checks to detect possible misconfiguration or problems.',
-    type: 'boolean',
-    deprecated: true,
-  },
-  {
-    alias: 'F',
-    name: 'fast-fail-regexps',
-    description:
-      'Comma-separated list of regular expressions. Requests matching one of these will get dropped instantly and will not go through the tunnel.',
-  },
-  {
-    alias: 'z',
-    name: 'log-stats',
-    description: 'Log statistics about HTTP traffic every <seconds>.',
-    type: 'number',
-    deprecated: true,
-  },
-  {
-    alias: 'l',
-    name: 'logfile',
-    description: 'Specify custom logfile.',
-  },
-  {
-    name: 'max-logsize',
-    description:
-      'Rotate logfile after reaching <bytes> size. Disabled by default.',
-    type: 'number',
-  },
-  {
-    alias: 'M',
-    name: 'max-missed-acks',
-    description:
-      'The max number of keepalive acks that can be missed before triggering reconnect.',
-    type: 'number',
-    deprecated: true,
-  },
-  {
-    name: 'metrics-address',
-    description: 'host:port server used to expose client-side metrics.',
-    deprecated: true,
-  },
-  {
-    name: 'status-address',
-    description: 'host:port server used to expose client status.',
-  },
-  {
-    name: 'no-autodetect',
-    description: 'Disable the autodetection of proxy settings.',
-    type: 'boolean',
-  },
-  {
-    alias: 'N',
-    name: 'no-proxy-caching',
-    description:
-      'Disable caching in Sauce Connect. All requests will be sent through the tunnel.',
-    type: 'boolean',
-    deprecated: true,
-  },
-  {
-    name: 'no-remove-colliding-tunnels',
-    description:
-      "Don't remove identified tunnels with the same name, or any other default tunnels if this is a default tunnel. Jobs will be distributed between these tunnels, enabling load balancing and high availability. By default, colliding tunnels will be removed when Sauce Connect is starting up.",
-    type: 'boolean',
-    deprecated: true,
-  },
-  {
-    alias: 'B',
-    name: 'no-ssl-bump-domains',
-    description:
-      'Comma-separated list of domains. Requests whose host matches one of these will not be SSL re-encrypted.',
-  },
-  {
-    name: 'pac',
-    description:
-      'Proxy autoconfiguration. Can be an http(s) or local file:// (absolute path only) URI.',
-  },
-  {
-    alias: 'd',
-    name: 'pidfile',
-    description: 'File that will be created with the pid of the process.',
-  },
-  {
-    alias: 'T',
-    name: 'proxy-tunnel',
-    description: 'Use the proxy configured with -p for the tunnel connection.',
-    type: 'boolean',
-  },
-  {
-    alias: 'w',
-    name: 'proxy-userpwd',
-    description:
-      'Username and password required to access the proxy configured with -p.',
-  },
-  {
-    alias: 'f',
-    name: 'readyfile',
-    description: 'File that will be touched to signal when tunnel is ready.',
-  },
-  {
-    alias: 'X',
-    name: 'scproxy-port',
-    description: 'Port on which scproxy will be listening.',
-  },
-  {
-    name: 'scproxy-read-limit',
-    description:
-      'Rate limit reads in scproxy to X bytes per second. This option can be used to adjust local network transfer rate in order not to overload the tunnel connection.',
-    deprecated: true,
-  },
-  {
-    name: 'scproxy-write-limit',
-    description:
-      'Rate limit writes in scproxy to X bytes per second. This option can be used to adjust local network transfer rate in order not to overload the tunnel connection.',
-    deprecated: true,
-  },
-  {
-    alias: 'P',
-    name: 'se-port',
-    description:
-      "Port on which Sauce Connect's Selenium relay will listen for requests. Selenium commands reaching Connect on this port will be relayed to Sauce Labs securely and reliably through Connect's tunnel (default 4445)",
-    type: 'number',
-    default: 4445,
-  },
-  {
-    alias: 's',
-    name: 'shared-tunnel',
-    description:
-      'Let sub-accounts of the tunnel owner use the tunnel if requested.',
-    type: 'boolean',
-  },
-  {
-    name: 'tunnel-cainfo',
-    description:
-      'CA certificate bundle to use for verifying tunnel connections. (default "/usr/local/etc/openssl/cert.pem")',
-  },
-  {
-    name: 'tunnel-capath',
-    description:
-      'Directory of CA certs to use for verifying tunnel connections. (default "/etc/ssl/certs")',
-    deprecated: true,
-  },
-  {
-    name: 'tunnel-cert',
-    description:
-      'Specify certificate to use for the tunnel connection, either public or private. Default: private. (default "private")',
-  },
-  {
-    alias: 't',
-    name: 'tunnel-domains',
-    description:
-      "Inverse of '--direct-domains'. Only requests for domains in this list will be sent through the tunnel. Overrides '--direct-domains'.",
-  },
-  {
-    name: 'tunnel-identifier',
-    description:
-      'Tunnel name used for this tunnel or the tunnels in the same HA pool.',
-    deprecated: true,
   },
   {
     alias: 'i',
@@ -360,14 +150,150 @@ export const SAUCE_CONNECT_CLI_PARAMS = [
       'Tunnel name used for this tunnel or the tunnels in the same HA pool.',
   },
   {
-    name: 'tunnel-pool',
-    description: 'The tunnel is a part of a high availability tunnel pool.',
+    alias: 'M',
+    name: 'metadata',
+    description:
+      'Custom metadata key-value pairs. This flag is, primarily, used by Sauce Labs to assign custom properties to the tunnel for reporting purposes.',
   },
   {
-    alias: 'v',
-    name: 'verbose',
+    alias: 's',
+    name: 'shared',
+    description:
+      "Share the tunnel within the same org unit. Only the 'all' option is currently supported. See here: https://docs.saucelabs.com/basics/acct-team-mgmt/sauce-connect-proxy-tunnels/.",
+  },
+  {
+    alias: 't',
+    name: 'tunnel-pool',
     type: 'boolean',
-    description: 'Enable verbose logging. Can be used up to two times.',
+    description:
+      'Denotes a tunnel as part of a high availability tunnel pool. See here: https://docs.saucelabs.com/secure-connections/sauce-connect/setup-configuration/high-availability/.',
+  },
+  {
+    alias: 'F',
+    name: 'deny-domains',
+    description:
+      "Deny requests to the matching domains. Prefix domains with '-' to exclude requests from being denied. Special keyword 'all' matches all domains.",
+  },
+  {
+    alias: 'D',
+    name: 'direct-domains',
+    description:
+      "Forward matching requests to their origin server over the public internet. Requests that don't match \"direct domains\" will be forwarded to customer-side over the Sauce Connect Proxy connection. You can specify --direct-domains or --tunnel-domains, but not both. Prefix domains with '-' to exclude requests from being forwarded directly.",
+  },
+  {
+    alias: 'B',
+    name: 'tls-passthrough-domains',
+    description:
+      "Pass matching requests to their origin server without SSL/TLS re-encryption. Requests that don't match will be re-encrypted. You can specify --tls-passthrough-domains or --tls-resign-domains, but not both. Prefix domains with '-' to exclude requests from being passed through.",
+  },
+  {
+    alias: 'b',
+    name: 'tls-resign-domains',
+    description:
+      "Resign SSL/TLS certificates for matching requests. You can specify --tls-resign-domains or --tls-passthrough-domains, but not both. Prefix domains with '-' to exclude requests from being resigned.",
+  },
+  {
+    alias: 'T',
+    name: 'tunnel-domains',
+    description:
+      "Forward matching requests over the Sauce Connect Proxy connection. Requests not matching \"tunnel domains\" will be forwarded to their origin server over the public internet. You can specify --tunnel-domains or --direct-domains, but not both. Prefix domains with '-' to exclude requests from being forwarded over the SC Proxy connection. Special keyword 'all' matches all domains.",
+  },
+  {
+    alias: 'a',
+    name: 'auth',
+    description: 'Site or upstream proxy basic authentication credentials.',
+  },
+  {
+    name: 'pac',
+    description:
+      'Proxy Auto-Configuration file to use for upstream proxy selection.',
+  },
+  {
+    name: 'sc-upstream-proxy',
+    description:
+      'Upstream proxy for test sessions . It is used for requests received from the Sauce Connect Server only.',
+  },
+  {
+    name: 'proxy-localhost',
+    description:
+      'Setting this to "allow" enables sending requests to localhost through the upstream proxy. Setting this to "direct" sends requests to localhost directly without using the upstream proxy. By default, requests to localhost are denied.',
+  },
+  {
+    name: 'proxy-sauce',
+    description:
+      'Establish a tunnel through an upstream proxy. Proxy for requests to Sauce Labs REST API and Sauce Connect servers only. See the -x, --proxy flag for more details on the format.',
+  },
+  {
+    name: 'dns-round-robin',
+    description:
+      'If more than one DNS server is specified with the --dns-server flag, passing this flag will enable round-robin selection.',
+  },
+  {
+    alias: 'n',
+    name: 'dns-server',
+    description:
+      'DNS server(s) to use instead of system default. There are two execution policies, when more then one server is specified. Fallback: the first server in a list is used as primary, the rest are used as fallbacks. Round robin: the servers are used in a round-robin fashion. The port is optional, if not specified the default port is 53.',
+  },
+  {
+    name: 'dns-timeout',
+    description:
+      'Timeout for dialing DNS servers. Only used if DNS servers are specified.',
+  },
+  {
+    name: 'cacert-file',
+    description:
+      'Add your own CA certificates to verify against. The system root certificates will be used in addition to any certificates in this list. Use this flag multiple times to specify multiple CA certificate files.',
+  },
+  {
+    name: 'http-dial-timeout',
+    description:
+      'The maximum amount of time a dial will wait for a connect to complete. With or without a timeout, the operating system may impose its own earlier timeout. For instance, TCP timeouts are often around 3 minutes.',
+  },
+  {
+    name: 'http-idle-conn-timeout',
+    description:
+      'The maximum amount of time an idle (keep-alive) connection will remain idle before closing itself. Zero means no limit.',
+  },
+  {
+    name: 'http-response-header-timeout',
+    description:
+      "The amount of time to wait for a server's response headers after fully writing the request (including its body, if any).This time does not include the time to read the response body. Zero means no limit.",
+  },
+  {
+    name: 'http-tls-handshake-timeout',
+    description:
+      'The maximum amount of time waiting to wait for a TLS handshake. Zero means no limit.',
+  },
+  {
+    name: 'http-tls-keylog-file',
+    description:
+      'File to log TLS master secrets in NSS key log format. By default, the value is taken from the SSLKEYLOGFILE environment variable. It can be used to allow external programs such as Wireshark to decrypt TLS connections.',
+  },
+  {
+    name: 'api-address',
+    description:
+      'The server address to listen on. If the host is empty, the server will listen on all available interfaces.',
+  },
+  {
+    name: 'api-basic-auth',
+    description: 'Basic authentication credentials to protect the server.',
+  },
+  {
+    name: 'api-idle-timeout',
+    description:
+      'The maximum amount of time to wait for the next request before closing connection.',
+  },
+  {
+    name: 'log-file',
+    description: 'Path to the log file, if empty, logs to stdout.',
+  },
+  {
+    name: 'log-http',
+    description: 'HTTP request and response logging mode.',
+  },
+  {
+    name: 'log-level',
+    description: 'Log level.',
   },
 ];
 export const SC_BOOLEAN_CLI_PARAMS = SAUCE_CONNECT_CLI_PARAMS.filter(

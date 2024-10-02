@@ -20,8 +20,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-import {format} from 'util';
-import {SAUCE_CONNECT_PLATFORM_DATA} from './constants';
+// import SauceLabs from './';
 import {getPlatform} from './utils';
 import {mkdirSync, unlinkSync, createWriteStream} from 'fs';
 import {basename, join} from 'path';
@@ -31,32 +30,32 @@ import compressing from 'compressing';
 
 export default class SauceConnectLoader {
   constructor(options = {}) {
-    const platform = getPlatform();
-    const platformData = SAUCE_CONNECT_PLATFORM_DATA[platform];
-    if (!platformData) {
-      throw new ReferenceError(`Unsupported platform ${platform}`);
-    }
-    const {url, use} = platformData;
-    this.url = format(url, options.sauceConnectVersion);
     this.destDir = join(__dirname, 'sc-loader');
     this.destSC = join(
       __dirname,
       'sc-loader',
       `.sc-v${options.sauceConnectVersion}`
     );
-    this.path = join(this.destSC, use);
+    let scBinary = 'sc';
+    if (getPlatform().startsWith('win')) {
+      scBinary += '.exe';
+    }
+    this.path = join(this.destSC, scBinary);
   }
 
   /**
-   * Verify if SC was already downloaded,
+   * Verify if SC was already downloaded.
    * if not then download it
    *
    * @api public
    */
-  verifyAlreadyDownloaded() {
+  verifyAlreadyDownloaded(options = {}) {
     return fs.stat(this.path).catch((err) => {
       if (err?.code === 'ENOENT') {
-        return this._download();
+        if (options.url) {
+          return this._download(options.url);
+        }
+        return false;
       }
       throw err;
     });
@@ -65,13 +64,13 @@ export default class SauceConnectLoader {
   /**
    * Download Sauce Connect
    */
-  _download() {
+  _download(sauceConnectURL) {
     mkdirSync(this.destDir, {recursive: true});
-    const compressedFilePath = join(this.destDir, basename(this.url));
+    const compressedFilePath = join(this.destDir, basename(sauceConnectURL));
     return new Promise((resolve, reject) => {
       const file = createWriteStream(compressedFilePath);
       https
-        .get(this.url, (response) => {
+        .get(sauceConnectURL, (response) => {
           response.pipe(file);
           file.on('finish', () => {
             file.close();

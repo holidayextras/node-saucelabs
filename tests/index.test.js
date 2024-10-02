@@ -476,7 +476,7 @@ describe('startSauceConnect', () => {
     );
     await api.startSauceConnect({
       scVersion: '1.2.3',
-      tunnelIdentifier: 'my-tunnel',
+      tunnelName: 'my-tunnel',
       'proxy-tunnel': 'abc',
       verbose: true,
       region: 'eu',
@@ -510,7 +510,7 @@ describe('startSauceConnect', () => {
       50
     );
     await api.startSauceConnect({
-      tunnelIdentifier: 'my-tunnel',
+      tunnelName: 'my-tunnel',
       'proxy-tunnel': 'abc',
       logger: (log) => logs.push(log),
     });
@@ -531,7 +531,7 @@ describe('startSauceConnect', () => {
       50
     );
     await api.startSauceConnect({
-      tunnelIdentifier: 'my-tunnel',
+      tunnelName: 'my-tunnel',
       'proxy-tunnel': 'abc',
       logger: (log) => logs.push(log),
     });
@@ -545,7 +545,7 @@ describe('startSauceConnect', () => {
     const err = await api
       .startSauceConnect({
         scVersion: '1.2.3',
-        tunnelIdentifier: 'my-tunnel',
+        tunnelName: 'my-tunnel',
         'proxy-tunnel': 'abc',
       })
       .catch((err) => err);
@@ -559,7 +559,7 @@ describe('startSauceConnect', () => {
     const err = await api
       .startSauceConnect({
         scVersion: '1.2.3',
-        tunnelIdentifier: 'my-tunnel',
+        tunnelName: 'my-tunnel',
         'proxy-tunnel': 'abc',
       })
       .catch((err) => err);
@@ -576,10 +576,7 @@ describe('startSauceConnect', () => {
         ),
       50
     );
-    const sc = await api.startSauceConnect(
-      {tunnelIdentifier: 'my-tunnel'},
-      true
-    );
+    const sc = await api.startSauceConnect({tunnelName: 'my-tunnel'}, true);
     setTimeout(() => {
       sc.cp.stdout.emit('data', 'Some other message');
       sc.cp.stdout.emit('data', 'Goodbye');
@@ -592,7 +589,7 @@ describe('startSauceConnect', () => {
     const api = new SauceLabs({user: 'foo', key: 'bar'});
     setTimeout(() => stderrEmitter.emit('data', 'Uuups'), 50);
     const res = await api
-      .startSauceConnect({tunnelIdentifier: 'my-tunnel'})
+      .startSauceConnect({tunnelName: 'my-tunnel'})
       .catch((err) => err);
     expect(res).toEqual(new Error('Uuups'));
   });
@@ -609,7 +606,7 @@ describe('startSauceConnect', () => {
       150
     );
     const res = await api
-      .startSauceConnect({tunnelIdentifier: 'my-tunnel'})
+      .startSauceConnect({tunnelName: 'my-tunnel'})
       .catch((err) => err);
     expect(res instanceof Error).toBe(false);
   });

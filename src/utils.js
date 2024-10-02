@@ -192,8 +192,24 @@ export function getStrictSsl() {
 }
 
 /**
- * Mainly just here for testing
+ * Returns an OS platform
+ * - darwin
+ * - linux
+ * - win32
+ * etc
  */
 export function getPlatform() {
   return process.platform;
+}
+
+/**
+ * Returns CPU architecture
+ * - 'x32'
+ * - 'x64'
+ * - 'arm'
+ * - 'arm64'
+ *   etc
+ */
+export function getCPUArch() {
+  return process.arch;
 }
