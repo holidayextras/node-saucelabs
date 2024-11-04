@@ -55,7 +55,7 @@
     "@babel/preset-env": "^7.22.15",
     "@babel/register": "^7.15.3",
     "babel-plugin-source-map-support": "^2.2.0",
-    "eslint": "^8.48.0",
+    "eslint": "^9.14.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.28.1",
     "husky": "^8.0.3",
